@@ -1,5 +1,4 @@
 import { app } from '@azure/functions';
-import fetch from 'node-fetch';
 
 const LOGIC_APP_URL = 'https://prod-00.southindia.logic.azure.com:443/workflows/5634ac3e89394d08ab4b618002a0e182/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=ABm-ma0YyrhsZqynklx640OOeLPKpB4eMef2pAbmbPk';
 
