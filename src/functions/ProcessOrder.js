@@ -53,10 +53,14 @@ app.http('ProcessOrder', {
       return {
         status: 200,
         headers: {
-          'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json'
         },
-        body: `Order received for ${product}`
-      };
+        body: JSON.stringify({
+            success: true,
+            message: `Order received for ${product}`
+        })
+    };
 
     } catch (error) {
       context.log('ERROR processing order:', error);
