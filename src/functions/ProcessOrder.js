@@ -6,36 +6,46 @@ app.http('ProcessOrder', {
   methods: ['POST', 'OPTIONS'],
   authLevel: 'anonymous',
   handler: async (request, context) => {
-    context.log('Processing order');
+    try {
+      context.log('Processing order');
 
-    // CORS preflight
-    if (request.method === 'OPTIONS') {
-      return {
-        status: 204,
+      if (request.method === 'OPTIONS') {
+        return {
+          status: 204,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type'
+          }
+        };
+      }
+
+      const body = await request.json();
+
+      const response = await fetch(LOGIC_APP_URL, {
+        method: 'POST',
         headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type'
-        }
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          productName: body.productName
+        })
+      });
+
+      context.log('Logic App response status:', response.status);
+
+      return {
+        status: 200,
+        body: `Order received for ${body.productName}`
+      };
+
+    } catch (error) {
+      context.log('ERROR:', error);
+
+      return {
+        status: 500,
+        body: 'Failed to process order'
       };
     }
-
-    const body = await request.json();
-
-    // CALL LOGIC APP
-    await fetch(LOGIC_APP_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        productName: body.productName
-      })
-    });
-
-    return {
-      status: 200,
-      body: `Order received for ${body.productName}`
-    };
   }
 });
