@@ -1,6 +1,7 @@
+const { app } = require("@azure/functions");
 const df = require("durable-functions");
 
-df.app.http("StartOrder", {
+app.http("StartOrder", {
     methods: ["POST"],
     authLevel: "anonymous",
     handler: async (request, context) => {
@@ -8,7 +9,7 @@ df.app.http("StartOrder", {
         const body = await request.json();
 
         const instanceId = await client.startNew(
-            "OrderOrchestration",
+            "OrderOrchestrator",
             undefined,
             body
         );
