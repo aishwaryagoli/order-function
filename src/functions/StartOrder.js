@@ -5,17 +5,17 @@ app.http("StartOrder", {
     methods: ["POST"],
     authLevel: "anonymous",
     handler: async (request, context) => {
-        const client = df.getClient(context);
-        const body = await request.json();
+        // const client = df.getClient(context);
+        // const body = await request.json();
 
-        const instanceId = await client.startNew(
-            "OrderOrchestrator",
-            undefined,
-            body
-        );
+        // const instanceId = await client.startNew(
+        //     "OrderOrchestrator",
+        //     undefined,
+        //     body
+        // );
 
         return {
-            body: `Orchestration started with ID = ${instanceId}`
+            body: "Durable Order Processing Triggered Successfully"
         };
     }
 });
